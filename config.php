@@ -5,10 +5,10 @@
  *
  */
 
-$host       = "localhost";
-$username   = "root";
-$password   = "root";
-$dbname     = "test";
+$host       = "nohemac.mysql.db.internal";
+$username   = "nohemac_wwmadm";
+$password   = "WTc5tQMW";
+$dbname     = "nohemac_wwm";
 $dsn        = "mysql:host=$host;dbname=$dbname";
 $options    = array(
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION

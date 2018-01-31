@@ -18,13 +18,13 @@ if (isset($_POST['submit']))
 		$connection = new PDO($dsn, $username, $password, $options);
 
 		$sql = "SELECT * 
-						FROM users
-						WHERE location = :location";
+						FROM questions
+						WHERE body like :searchPattern";
 
-		$location = $_POST['location'];
+		$searchPattern = $_POST['searchPattern'];
 
 		$statement = $connection->prepare($sql);
-		$statement->bindParam(':location', $location, PDO::PARAM_STR);
+		$statement->bindParam(':searchPattern', $searchPattern, PDO::PARAM_STR);
 		$statement->execute();
 
 		$result = $statement->fetchAll();
@@ -43,18 +43,19 @@ if (isset($_POST['submit']))
 {
 	if ($result && $statement->rowCount() > 0) 
 	{ ?>
-		<h2>Results</h2>
+		<h2>Suchresulte</h2>
 
 		<table>
 			<thead>
 				<tr>
 					<th>#</th>
-					<th>First Name</th>
-					<th>Last Name</th>
-					<th>Email Address</th>
-					<th>Age</th>
-					<th>Location</th>
-					<th>Date</th>
+					<th>Frage</th>
+					<th>Antwort A</th>
+					<th>Antwort B</th>
+					<th>Antwort C</th>
+					<th>Antwort D</th>
+					<th>Korrekte Antwort</th>
+					<th>Level</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -62,13 +63,14 @@ if (isset($_POST['submit']))
 		foreach ($result as $row) 
 		{ ?>
 			<tr>
-				<td><?php echo escape($row["id"]); ?></td>
-				<td><?php echo escape($row["firstname"]); ?></td>
-				<td><?php echo escape($row["lastname"]); ?></td>
-				<td><?php echo escape($row["email"]); ?></td>
-				<td><?php echo escape($row["age"]); ?></td>
-				<td><?php echo escape($row["location"]); ?></td>
-				<td><?php echo escape($row["date"]); ?> </td>
+				<td><?php echo escape($row["questionID"]); ?></td>
+				<td><?php echo escape($row["body"]); ?></td>
+				<td><?php echo escape($row["a"]); ?></td>
+				<td><?php echo escape($row["b"]); ?></td>
+				<td><?php echo escape($row["c"]); ?></td>
+				<td><?php echo escape($row["d"]); ?></td>
+				<td><?php echo escape($row["correct"]); ?></td>
+				<td><?php echo escape($row["level"]); ?> </td>
 			</tr>
 		<?php 
 		} ?>
@@ -78,19 +80,19 @@ if (isset($_POST['submit']))
 	} 
 	else 
 	{ ?>
-		<blockquote>No results found for <?php echo escape($_POST['location']); ?>.</blockquote>
+		<blockquote>Keine Resultate gefunden für: <?php echo escape($_POST['searchPattern']); ?>.</blockquote>
 	<?php
 	} 
 }?> 
 
-<h2>Find user based on location</h2>
+<h2>Suche Fragen, die zu diesem LIKE Pattern passen</h2>
 
 <form method="post">
-	<label for="location">Location</label>
-	<input type="text" id="location" name="location">
-	<input type="submit" name="submit" value="View Results">
+	<label for="searchPattern">Suchpattern</label>
+	<input type="text" id="searchPattern" name="searchPattern">
+	<input type="submit" name="submit" value="Zeige Resulte">
 </form>
 
-<a href="index.php">Back to home</a>
+<a href="index.php">Zurück</a>
 
 <?php require "templates/footer.php"; ?>
